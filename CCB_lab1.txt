@@ -1,0 +1,18 @@
+import org.apache.spark.sql.SparkSession
+val rdd = sc.textFile("C:/Users/Всеволод/Desktop/ООВ/CCB_Lab1/textfile.txt")
+val Word= "good"
+val Count= rdd.filter(_.toLowerCase.contains(Word)).count()
+println(s"Количество вхождений слова '$Word' в заданном файле: $Count")
+val words_rdd = rdd.flatMap(_.split("\\s+")).filter(_.nonEmpty).collect()
+//Целочисленный массив
+val int_array_rdd = sc.parallelize(Array(1, 3, 4, 5, 8))
+//Применение reduce для нахождения суммы всех элементов
+val reduce_rdd = int_array_rdd.reduce(_+_)
+//Применение map для умножения каждого элемента на 2
+val map_rdd = int_array_rdd.map(_*2).collect()
+//Ассоциативный массив
+val assoc_array_rdd = sc.parallelize(Array(("a", 1), ("b", 2), ("c", 3), ("a", 4)))
+//Применение reduceByKey для сложения значений по ключу
+val reduce_key_rdd = assoc_array_rdd.reduceByKey((x, y) => x + y)
+//Применение mapValues для умножения каждого элемента на 2
+val map_values_rdd = assoc_array_rdd.mapValues(_*2).collect()
